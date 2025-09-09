@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="firmware-updater" default="jar" basedir=".">
+    <property name="build.name" value="IntelGalileoFirmwareUpdater"/>
+    <property name="build.friendlyName" value="Intel Galileo Firmware Updater"/>
+    <property name="build.shell.version" value="1.0.0"/>
+    <property name="build.license" value="GNU General Public License"/>
+
+    <property name="build.dir" location="${basedir}/output"/>
+    <property name="build.src.dir" location="${basedir}/src/main/java"/>
+    <property name="build.resources.dir" location="${basedir}/src/main/resources"/>
+
+    <pathconvert property="capsules.dir.list" pathsep="${line.separator}">
+        <fileset dir="${build.resources.dir}/capsules">
+            <include name="1.*.*.cap"/>
+        </fileset>
+    </pathconvert>
+    <loadresource property="capsule.file.path">
+        <string value="${capsules.dir.list}"/>
+        <filterchain>
+            <headfilter lines="1"/>
+        </filterchain>
+    </loadresource>
+    <basename property="build.firmware.version" file="${capsule.file.path}" suffix=".cap"/>
+
+    <property name="build.classes.dir" location="${build.dir}/classes"/>
+    <property name="build.jarName" value="${build.name}-${build.firmware.version}"/>
+    <property name="build.mainClassName" value="com.intel.galileo.flash.tool.FirmwareUpdateTool"/>
+    <property name="build.about.version" value="Shell[${build.shell.version}] Firmware[${build.firmware.version}]"/>
+</project>
